@@ -15,7 +15,7 @@ class Admin::OrdersController < ApplicationController
   end
 
   def ship
-    # TODO 优化@order
+    # TODO 优化@ordertouch app/views/admin/orders/_state_option.html.erb
     @order = Order.find(params[:id])
     @order.ship!
     redirect_to :back
