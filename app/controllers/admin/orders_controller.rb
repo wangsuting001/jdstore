@@ -18,6 +18,7 @@ class Admin::OrdersController < ApplicationController
     # TODO 优化@ordertouch app/views/admin/orders/_state_option.html.erb
     @order = Order.find(params[:id])
     @order.ship!
+    OrderMailer.notify_ship(@order).deliver!
     redirect_to :back
   end
 
@@ -30,6 +31,7 @@ class Admin::OrdersController < ApplicationController
   def cancel
     @order = Order.find(params[:id])
     @order.cancel_order!
+    OrderMailer.notify_cancel(@order).deliver!
     redirect_to :back
   end
 
