@@ -3,6 +3,7 @@ class Admin::OrdersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :admin_required
+  before_action :load_order, only: [:show, :ship, :shipped, :cancel, :return]
 
   def index
     # TODO 待优化
@@ -10,34 +11,33 @@ class Admin::OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.find(params[:id])
     @product_lists = @order.product_lists
   end
 
   def ship
-    # TODO 优化@ordertouch app/views/admin/orders/_state_option.html.erb
-    @order = Order.find(params[:id])
     @order.ship!
     OrderMailer.notify_ship(@order).deliver!
-    redirect_to :back
+    redirect_back(fallback_location: admin_orders_path)
   end
 
   def shipped
-    @order = Order.find(params[:id])
     @order.deliver!
-    redirect_to :back
+    redirect_back(fallback_location: admin_orders_path)
   end
 
   def cancel
-    @order = Order.find(params[:id])
     @order.cancel_order!
     OrderMailer.notify_cancel(@order).deliver!
-    redirect_to :back
+    redirect_back(fallback_location: admin_orders_path)
   end
 
   def return
-    @order = Order.find(params[:id])
     @order.return_good!
-    redirect_to :back
+    redirect_back(fallback_location: admin_orders_path)
+  end
+
+  private
+  def load_order
+    @order = Order.find(params[:id])
   end
 end
