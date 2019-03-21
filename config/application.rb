@@ -11,5 +11,10 @@ module Jdstore
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    CarrierWave.configure do |config|
+      config.asset_host = proc do |file|
+        "http://127.0.0.1:3000"
+      end
+    end
   end
 end
