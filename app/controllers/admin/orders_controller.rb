@@ -6,8 +6,7 @@ class Admin::OrdersController < ApplicationController
   before_action :load_order, only: [:show, :ship, :shipped, :cancel, :return]
 
   def index
-    # TODO 待优化
-    @orders = Order.order("id DESC")
+    @orders = Order.recent
   end
 
   def show
