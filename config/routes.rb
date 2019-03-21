@@ -19,12 +19,17 @@ Rails.application.routes.draw do
 
   resources :carts, only: [:index] do
     collection do
-       delete :clean
-       post :checkout
+      delete :clean
+      post :checkout
     end
   end
 
   resources :cart_items
 
-  resources :orders
+  resources :orders do
+    member do
+      post :pay_with_alipay
+      post :pay_with_wechat
+    end
+  end
 end
